@@ -4,7 +4,6 @@ services:
   mariadb:
     image: mariadb:10.2.38
     container_name: server
-    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: server
