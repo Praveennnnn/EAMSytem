@@ -22,10 +22,10 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "libs/database": [
+      "@lib/database": [
         "libs/database/src"
       ],
-      "libs/database/*": [
+      "@lib/database/*": [
         "libs/database/src/*"
       ]
     }
