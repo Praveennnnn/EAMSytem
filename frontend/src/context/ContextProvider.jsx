@@ -22,23 +22,23 @@ const ContextProvider = ({ children }) => {
   const authenticated = !!user
   const role = user?.role || null
 
-  useEffect(()=>{
-    const checkSession =()=>{
-      const loginTime =localStorage.getItem("loginTime")
-      if(!loginTime) return;
-      const now =Date.now();
-      const FIFTEEN_MINUTES =15*60*1000;
+  // useEffect(()=>{
+  //   const checkSession =()=>{
+  //     const loginTime =localStorage.getItem("loginTime")
+  //     if(!loginTime) return;
+  //     const now =Date.now();
+  //     const FIFTEEN_MINUTES =15*60*1000;
 
-      if(now -loginTime>FIFTEEN_MINUTES){
-        logout();
-        alert("session expired. pleace login again")
-      }
-    };
-    checkSession();
+  //     if(now -loginTime>FIFTEEN_MINUTES){
+  //       logout();
+  //       alert("session expired. pleace login again")
+  //     }
+  //   };
+  //   checkSession();
 
-    const interval =setInterval(checkSession,60000)
-    return()=>clearInterval(interval)
-  },[]);
+  //   const interval =setInterval(checkSession,60000)
+  //   return()=>clearInterval(interval)
+  // },[]);
 
   return (
     <UserContext.Provider value={{ user, role, authenticated, login, logout }}>

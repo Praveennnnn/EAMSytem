@@ -14,6 +14,7 @@ const Layout = ({ children }) => {
     { path: '/attendance', icon: '📅', label: 'Attendance', desc: 'Mark Attendance', roles: ['admin', 'employee'] },
     { path: '/reports', icon: '📈', label: 'Reports', desc: 'View Reports', roles: ['admin'] },
     { path: '/employees', icon: '👥', label: 'Employees', desc: 'Manage Staff', roles: ['admin'] },
+    { path: '/users', icon: '👤', label: 'Users', desc: 'Create User', roles: ['admin'] },
   ]
 
   const menuItems = allMenuItems.filter(item => item.roles.includes(role))

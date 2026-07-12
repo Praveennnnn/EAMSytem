@@ -13,6 +13,7 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    navigate('/dashboard')
     setLoading(true)
     axios.post("http://localhost:3000/auth/login", values)
       .then(res => {

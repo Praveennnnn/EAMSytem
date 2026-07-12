@@ -9,6 +9,7 @@ import Dashboard from './pages/Dashboard';
 import Attendance from './pages/Attendance';
 import Reports from './pages/Reports';
 import Employees from './pages/Employees';
+import Users from './pages/Users';
 import Error from './pages/Error';
 import ProtectedRoute from './context/ProtectedRoute';
 
@@ -54,6 +55,14 @@ function App() {
           element={
             <ProtectedRoute roles={['admin']}>
               <Employees />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/users"
+          element={
+            <ProtectedRoute roles={['admin']}>
+              <Users />
             </ProtectedRoute>
           }
         />
