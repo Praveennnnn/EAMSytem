@@ -7,9 +7,6 @@ dotenv.config();
 
   const app = await NestFactory.create(AppModule);
   await app.listen(process.env.PORT ?? 3000);
-  console.log(process.env.DB_HOST,'-----');
-console.log(process.env.DB_PORT);
-console.log(process.env.DB_USERNAME);
-console.log(process.env.DB_DATABASE);
+
 }
 bootstrap();

@@ -1,49 +1,42 @@
-
 import {
   Table,
   Column,
   Model,
-  DataType,
-  PrimaryKey,
-  AutoIncrement,
-  AllowNull,
-  Unique,
-  Default,
 } from 'sequelize-typescript';
 
-@Table({
-  tableName: 'user',
-  timestamps: true,
-  paranoid: true, // Adds deletedAt column
-})
-export class User extends Model<User> {
-  @PrimaryKey
-  @AutoIncrement
-  @Column
-  declare id: number;
+interface UserAttributes {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  role: string;
+  isActive: boolean;
+}
 
-  @AllowNull(false)
+interface UserCreationAttributes
+  extends Omit<UserAttributes, 'id'> {}
+
+@Table
+export class User extends Model<
+  UserAttributes,
+  UserCreationAttributes
+> {
   @Column
   declare firstName: string;
 
-  @AllowNull(false)
   @Column
   declare lastName: string;
 
-  @Unique
-  @AllowNull(false)
   @Column
   declare email: string;
 
-  @AllowNull(false)
   @Column
   declare password: string;
 
-  @Default('user')
-  @Column(DataType.ENUM('admin', 'user'))
-  declare role: string;
+  @Column
+  declare  role: string;
 
-  @Default(true)
   @Column
   declare isActive: boolean;
 }

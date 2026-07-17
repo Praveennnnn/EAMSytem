@@ -15,11 +15,11 @@ const Login = () => {
     e.preventDefault()
     navigate('/dashboard')
     setLoading(true)
-    axios.post("http://localhost:3000/auth/login", values)
+    axios.post("http://localhost:4000/users/login-user", values)
       .then(res => {
         if (res.data.message === "Login successful") {
           toast.success("Welcome back to EAMS! 👋")
-          login(res.data.user)
+          login(res.data)
           const role = res.data.user?.role
           navigate(role === 'admin' ? '/dashboard' : '/attendance')
         } else {

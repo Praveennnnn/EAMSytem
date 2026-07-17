@@ -7,7 +7,7 @@ const Attendance = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const { role, user } = useContext(UserContext)
 
-  return (
+  return (  
     <Layout>
       <div>
         {/* Page Header */}

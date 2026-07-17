@@ -16,7 +16,7 @@ const Users = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
     setLoading(true)
-
+    console.log('User Data:', values) 
     toast.success('User account created successfully! 👤')
     setValues(initialValues)
     setLoading(false)

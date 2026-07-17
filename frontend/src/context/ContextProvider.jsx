@@ -20,7 +20,7 @@ const ContextProvider = ({ children }) => {
   }
 
   const authenticated = !!user
-  const role = user?.role || null
+  const role = user?.data?.role || null
 
   // useEffect(()=>{
   //   const checkSession =()=>{

@@ -11,11 +11,8 @@ export class DatabaseService implements OnModuleInit {
 
   async onModuleInit() {
     try {
-        console.log('🔗 Attempting to connect to the database...');
       await this.sequelize.authenticate();
-      console.log('✅ Database connected successfully');
     } catch (error) {
-      console.error('❌ Database connection failed', error);
     }
   }
 }

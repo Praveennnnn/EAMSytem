@@ -7,6 +7,5 @@ export class SequelizeService implements OnModuleInit {
 
   async onModuleInit() {
     await this.sequelize.authenticate();
-    console.log('Database connected successfully');
   }
 }

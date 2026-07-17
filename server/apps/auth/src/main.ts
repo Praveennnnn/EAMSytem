@@ -4,9 +4,12 @@ import * as dotenv from 'dotenv';
 
 async function bootstrap() {
   dotenv.config();
+  
   const app = await NestFactory.create(AuthModule);
-  await app.listen(process.env.port ?? 3000);
-  console.log('Auth service is running on port', process.env.PORT );
-
+  app.enableCors({
+  origin: 'http://localhost:5173',
+  credentials: true,
+});
+  await app.listen(process.env.PORT ?? 4000);
 }
 bootstrap();
