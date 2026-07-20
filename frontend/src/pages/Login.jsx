@@ -1,8 +1,8 @@
 import React, { useState, useContext } from 'react'
-import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { toast } from "react-toastify";
 import { UserContext } from '../context/ContextProvider';
+import { getPostLoginRoute, loginUser, normalizeAuthUser } from '../api/auth';
 
 const Login = () => {
   const [values, setValues] = useState({ username: "", password: "" })
@@ -11,23 +11,26 @@ const Login = () => {
   const navigate = useNavigate()
   const { login } = useContext(UserContext)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    navigate('/dashboard')
     setLoading(true)
-    axios.post("http://localhost:4000/users/login-user", values)
-      .then(res => {
-        if (res.data.message === "Login successful") {
-          toast.success("Welcome back to EAMS! 👋")
-          login(res.data)
-          const role = res.data.user?.role
-          navigate(role === 'admin' ? '/dashboard' : '/attendance')
-        } else {
-          toast.error(res.data.message || "Invalid credentials")
-        }
-      })
-      .catch(() => toast.error("Server error. Please try again."))
-      .finally(() => setLoading(false))
+
+    try {
+      const { data } = await loginUser(values)
+
+      if (data.message === "Login successful") {
+        toast.success("Welcome back to EAMS! 👋")
+        const userData = normalizeAuthUser(data)
+        login(userData)
+        navigate(getPostLoginRoute(userData.role))
+      } else {
+        toast.error(data.message || "Invalid credentials")
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Server error. Please try again.")
+    } finally {
+      setLoading(false)
+    }
   }
 
   const features = [

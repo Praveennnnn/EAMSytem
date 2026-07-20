@@ -23,6 +23,9 @@ export class User extends Model<
   UserCreationAttributes
 > {
   @Column
+  declare username: string;
+
+  @Column
   declare firstName: string;
 
   @Column

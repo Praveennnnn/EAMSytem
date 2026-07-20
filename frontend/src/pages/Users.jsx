@@ -2,8 +2,17 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import Layout from '../components/Layout'
+import { USER_ROLES, createUser } from '../api/users'
 
-const initialValues = { name: '', email: '', password: '' }
+const initialValues = {
+  username: '',
+  firstName: '',
+  lastName: '',
+  email: '',
+  password: '',
+  role: '',
+  isActive: true,
+}
 
 const Users = () => {
   const [values, setValues] = useState(initialValues)
@@ -13,13 +22,19 @@ const Users = () => {
 
   const set = (field) => (e) => setValues({ ...values, [field]: e.target.value })
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
-    console.log('User Data:', values) 
-    toast.success('User account created successfully! 👤')
-    setValues(initialValues)
-    setLoading(false)
+
+    try {
+      await createUser(values)
+      toast.success('User account created successfully! 👤')
+      setValues(initialValues)
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to create user. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleCancel = () => {
@@ -52,37 +67,141 @@ const Users = () => {
               <div className="card-body p-4">
                 <form onSubmit={handleSubmit}>
 
-                  {/* Name + Email */}
+                  {/* Username */}
+                  <div className="mb-3">
+                    <label className="form-label small fw-semibold mb-2" style={{ color: '#1e3a8a' }}>
+                      <span className="me-1">🏷️</span> Username
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control rounded-3"
+                      style={{ borderColor: '#93c5fd' }}
+                      placeholder="e.g. Jhon"
+                      required
+                      autoComplete="username"
+                      value={values.username}
+                      onChange={set('username')}
+                    />
+                  </div>
+
+                  {/* First Name + Last Name */}
                   <div className="row g-3 mb-3">
                     <div className="col-12 col-sm-6">
                       <label className="form-label small fw-semibold mb-2" style={{ color: '#1e3a8a' }}>
-                        <span className="me-1">👤</span> Full Name
+                        <span className="me-1">👤</span> First Name
                       </label>
                       <input
                         type="text"
                         className="form-control rounded-3"
                         style={{ borderColor: '#93c5fd' }}
-                        placeholder="e.g. John Doe"
+                        placeholder="e.g. John"
                         required
-                        autoComplete="name"
-                        value={values.name}
-                        onChange={set('name')}
+                        value={values.firstName}
+                        onChange={set('firstName')}
                       />
                     </div>
                     <div className="col-12 col-sm-6">
                       <label className="form-label small fw-semibold mb-2" style={{ color: '#1e3a8a' }}>
-                        <span className="me-1">✉️</span> Email Address
+                        <span className="me-1">👤</span> Last Name
                       </label>
                       <input
-                        type="email"
+                        type="text"
                         className="form-control rounded-3"
                         style={{ borderColor: '#93c5fd' }}
-                        placeholder="john@company.com"
+                        placeholder="e.g. Doe"
                         required
-                        autoComplete="email"
-                        value={values.email}
-                        onChange={set('email')}
+                        value={values.lastName}
+                        onChange={set('lastName')}
                       />
+                    </div>
+                  </div>
+
+                  {/* Email */}
+                  <div className="mb-3">
+                    <label className="form-label small fw-semibold mb-2" style={{ color: '#1e3a8a' }}>
+                      <span className="me-1">✉️</span> Email Address
+                    </label>
+                    <input
+                      type="email"
+                      className="form-control rounded-3"
+                      style={{ borderColor: '#93c5fd' }}
+                      placeholder="john@gmail.com"
+                      required
+                      autoComplete="email"
+                      value={values.email}
+                      onChange={set('email')}
+                    />
+                  </div>
+
+                  {/* Role selector */}
+                  <div className="mb-3">
+                    <label className="form-label small fw-semibold mb-2" style={{ color: '#1e3a8a' }}>
+                      <span className="me-1">🎭</span> Select Role
+                    </label>
+                    <div className="d-flex gap-3">
+                      {USER_ROLES.map((roleOption) => {
+                        const selected = values.role === roleOption.value
+                        return (
+                          <div
+                            key={roleOption.value}
+                            onClick={() => setValues({ ...values, role: roleOption.value })}
+                            className="flex-fill rounded-3 p-3 d-flex align-items-center gap-3"
+                            style={{
+                              cursor: 'pointer',
+                              border: selected ? '2px solid #3b82f6' : '2px solid #e5e7eb',
+                              background: selected ? '#dbeafe' : '#fff',
+                              transition: 'all 0.2s',
+                            }}
+                            onMouseEnter={(e) => {
+                              if (!selected) e.currentTarget.style.borderColor = '#93c5fd'
+                            }}
+                            onMouseLeave={(e) => {
+                              if (!selected) e.currentTarget.style.borderColor = '#e5e7eb'
+                            }}>
+                            <div
+                              className="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                              style={{
+                                width: '45px',
+                                height: '45px',
+                                background: selected ? '#3b82f6' : '#f1f5f9',
+                                transition: 'all 0.2s',
+                              }}>
+                              <span style={{ fontSize: '1.3rem' }}>{selected ? '✓' : roleOption.icon}</span>
+                            </div>
+                            <div className="flex-grow-1">
+                              <div className="fw-semibold" style={{ color: selected ? '#1e40af' : '#475569', fontSize: '0.9rem' }}>
+                                {roleOption.label}
+                              </div>
+                              <div className="small" style={{ color: '#64748b', fontSize: '0.75rem' }}>
+                                {roleOption.desc}
+                              </div>
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                    <input
+                      type="text"
+                      value={values.role}
+                      required
+                      readOnly
+                      style={{ opacity: 0, position: 'absolute', pointerEvents: 'none', width: 0, height: 0 }}
+                    />
+                  </div>
+
+                  {/* Active status */}
+                  <div className="mb-3">
+                    <div className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        id="isActive"
+                        checked={values.isActive}
+                        onChange={(e) => setValues({ ...values, isActive: e.target.checked })}
+                      />
+                      <label className="form-check-label small fw-semibold" htmlFor="isActive" style={{ color: '#1e3a8a' }}>
+                        Active account
+                      </label>
                     </div>
                   </div>
 
@@ -96,9 +215,9 @@ const Users = () => {
                         type={showPassword ? 'text' : 'password'}
                         className="form-control rounded-start-3"
                         style={{ borderColor: '#93c5fd' }}
-                        placeholder="Create a strong password"
+                        placeholder="password123"
                         required
-                        minLength={8}
+                        minLength={6}
                         autoComplete="new-password"
                         value={values.password}
                         onChange={set('password')}
@@ -111,7 +230,7 @@ const Users = () => {
                         {showPassword ? '🙈' : '👁️'}
                       </button>
                     </div>
-                    <small className="text-muted">Minimum 8 characters required</small>
+                    <small className="text-muted">Minimum 6 characters required</small>
                   </div>
 
                   {/* Submit Buttons */}
@@ -156,19 +275,19 @@ const Users = () => {
                 <ul className="list-unstyled mb-0 small">
                   <li className="mb-2 d-flex gap-2">
                     <span>✓</span>
-                    <span>Use the employee&apos;s full legal name</span>
+                    <span>Choose a unique username for login</span>
                   </li>
                   <li className="mb-2 d-flex gap-2">
                     <span>✓</span>
-                    <span>Provide a valid company email address</span>
+                    <span>Provide a valid email address</span>
                   </li>
                   <li className="mb-2 d-flex gap-2">
                     <span>✓</span>
-                    <span>Use strong passwords with 8+ characters</span>
+                    <span>Use strong passwords with 6+ characters</span>
                   </li>
                   <li className="d-flex gap-2">
                     <span>✓</span>
-                    <span>Share credentials securely with the new user</span>
+                    <span>Keep inactive accounts disabled until setup is complete</span>
                   </li>
                 </ul>
               </div>

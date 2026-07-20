@@ -10,7 +10,7 @@ const Layout = ({ children }) => {
 
   const allMenuItems = [
     { path: '/dashboard', icon: '📊', label: 'Dashboard', desc: 'Overview & Stats', roles: ['admin'] },
-    { path: '/register', icon: '👤', label: 'Register', desc: 'Add Employee', roles: ['admin'] },
+    // { path: '/register', icon: '👤', label: 'Register', desc: 'Add Employee', roles: ['admin'] },
     { path: '/attendance', icon: '📅', label: 'Attendance', desc: 'Mark Attendance', roles: ['admin', 'employee'] },
     { path: '/reports', icon: '📈', label: 'Reports', desc: 'View Reports', roles: ['admin'] },
     { path: '/employees', icon: '👥', label: 'Employees', desc: 'Manage Staff', roles: ['admin'] },

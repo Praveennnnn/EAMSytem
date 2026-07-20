@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Login from './pages/Login';
-import Register from './pages/Register';
+// import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Attendance from './pages/Attendance';
 import Reports from './pages/Reports';
@@ -26,7 +26,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route
+        {/* <Route
           path="/register"
           element={
             <ProtectedRoute roles={['admin']}>
@@ -34,6 +34,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route */}
         <Route
           path="/attendance"
           element={
