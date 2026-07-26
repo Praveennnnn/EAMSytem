@@ -6,8 +6,8 @@ export class UsersController {
 
     constructor(private readonly userService: UsersService) { }
     @Post('create-user')
-    async registerUser() {
-        return await this.userService.createUser();
+    async registerUser(@Body()payload:any) {
+        return await this.userService.createUser(payload);
     }
     @Post('login-user')
     async loginUser(@Body() body: { email: string; password: string }) {

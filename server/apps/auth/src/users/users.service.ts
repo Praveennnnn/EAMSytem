@@ -9,12 +9,13 @@ export class UsersService {
     private readonly userModel: typeof User,
   ) {}
 
-  async createUser() {
+  async createUser(payload: any) {
     const query = await this.userModel.create({
-      firstName: 'John',
-      lastName: 'Doe',
-      email: 'john@gmail.com',
-      password: 'password123',
+      username: payload.username,
+      firstName: payload.firstName,
+      lastName: payload.lastName,
+      email: payload.email,
+      password: payload.password,
       role: 'user',
       isActive: true,
     });
